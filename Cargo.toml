@@ -12,8 +12,8 @@ edition = "2018"
 exclude = [ "sgx/*", ]
 
 [dependencies]
-unicase = { git = "https://github.com/mesalock-linux/unicase-sgx" }
-sgx_tstd = { rev = "v1.0.9", git = "https://github.com/baidu/rust-sgx-sdk.git", optional = true ,features = ["net"]}
+unicase = { git = "https://github.com/mesalock-linux/unicase-sgx", tag = "sgx_1.0.9" }
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk", optional = true, features = ["net"], tag = "v1.0.9"}
 
 [features]
 default = ["rust-tls", "mesalock_sgx"]
@@ -27,19 +27,19 @@ mesalock_sgx = ["sgx_tstd"]
 [dependencies.rustls]
 #version = "^0.15"
 git = "https://github.com/mesalock-linux/rustls"
-branch = "mesalock_sgx"
+tag = "sgx_1.0.9"
 optional = true
 
 [dependencies.webpki]
 #version = "^0.19"
 git = "https://github.com/mesalock-linux/webpki"
-branch = "mesalock_sgx"
+tag = "sgx_1.0.9"
 optional = true
 
 [dependencies.webpki-roots]
 #version = "^0.16"
 git = "https://github.com/mesalock-linux/webpki-roots"
-branch = "mesalock_sgx"
+tag = "sgx_1.0.9"
 optional = true
 
 [badges]

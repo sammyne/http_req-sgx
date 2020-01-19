@@ -1,11 +1,11 @@
 //!secure connection over TLS
 
-use std::prelude::v1::*;
 use crate::error::Error as HttpError;
+use std::prelude::v1::*;
 use std::{
-    untrusted::fs::File,
     io::{self, BufReader},
     path::Path,
+    untrusted::fs::File,
 };
 
 #[cfg(feature = "native-tls")]
@@ -152,5 +152,22 @@ impl Config {
         let stream = StreamOwned::new(session, stream);
 
         Ok(Conn { stream })
+    }
+
+    #[cfg(feature = "rust-tls")]
+    pub fn new_with_root_certs(ca: &str) -> Result<Self, HttpError> {
+        let mut config = rustls::ClientConfig::new();
+        let mut reader = BufReader::new(ca.as_bytes());
+
+        config
+            .root_store
+            .add_pem_file(&mut reader)
+            .map_err(|_| HttpError::from(ParseErr::Invalid))?;
+
+        let c = Config {
+            client_config: std::sync::Arc::new(config),
+        };
+
+        Ok(c)
     }
 }
